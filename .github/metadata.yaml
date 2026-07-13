@@ -1,0 +1,5 @@
+description: The legacy EnvVars surface and its envVars/projectRoot dependency keys, backed by swift-environment.
+topics:
+  - foundations
+  - dependencies
+  - environment
