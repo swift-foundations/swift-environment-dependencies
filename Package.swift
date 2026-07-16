@@ -24,10 +24,16 @@ let package = Package(
         .visionOS(.v26),
     ],
     products: [
-        // The environment × dependencies integration: the legacy dictionary-backed
-        // `EnvVars` surface (formerly ServerFoundationEnvVars) and its `\.envVars`
-        // dependency key, plus the `\.projectRoot` key. Live reads delegate to the
-        // institute `Environment` package.
+        .library(
+            name: "Environment Dependencies Core",
+            targets: ["Environment Dependencies Core"]
+        ),
+        .library(
+            name: "Environment Dependencies Foundation Integration",
+            targets: ["Environment Dependencies Foundation Integration"]
+        ),
+        // Compatibility-only migration facade. New consumers must select Core or
+        // Foundation Integration directly; this target accepts no new behavior.
         .library(
             name: "Environment Dependencies",
             targets: ["Environment Dependencies"]
@@ -40,19 +46,45 @@ let package = Package(
     ],
     targets: [
         .target(
-            name: "Environment Dependencies",
+            name: "Environment Dependencies Core",
             dependencies: [
                 .product(name: "Environment", package: "swift-environment"),
                 .product(name: "Dependencies", package: "swift-dependencies"),
                 .product(name: "Logging", package: "swift-log"),
             ]
         ),
-        .testTarget(
-            name: "Environment Dependencies Tests",
+        .target(
+            name: "Environment Dependencies Foundation Integration",
             dependencies: [
-                "Environment Dependencies",
+                "Environment Dependencies Core",
+                .product(name: "Environment", package: "swift-environment"),
+                .product(name: "Dependencies", package: "swift-dependencies"),
+            ]
+        ),
+        .target(
+            name: "Environment Dependencies",
+            dependencies: [
+                "Environment Dependencies Core",
+                "Environment Dependencies Foundation Integration",
+            ]
+        ),
+        .testTarget(
+            name: "Environment Dependencies Core Tests",
+            dependencies: [
+                "Environment Dependencies Core",
                 .product(name: "Dependencies Test Support", package: "swift-dependencies"),
             ]
+        ),
+        .testTarget(
+            name: "Environment Dependencies Foundation Integration Tests",
+            dependencies: [
+                "Environment Dependencies Foundation Integration",
+                .product(name: "Dependencies Test Support", package: "swift-dependencies"),
+            ]
+        ),
+        .testTarget(
+            name: "Environment Dependencies Compatibility Tests",
+            dependencies: ["Environment Dependencies"]
         ),
     ],
     swiftLanguageModes: [.v6]

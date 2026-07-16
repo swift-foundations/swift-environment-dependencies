@@ -3,4 +3,8 @@
 //  swift-environment-dependencies
 //
 
-@_exported public import Dependencies
+// Deprecated compatibility facade. New consumers import
+// Environment_Dependencies_Core or
+// Environment_Dependencies_Foundation_Integration directly.
+@_exported public import Environment_Dependencies_Core
+@_exported public import Environment_Dependencies_Foundation_Integration

@@ -6,7 +6,6 @@
 //  (decomposition W3, concern C8).
 //
 
-public import Foundation
 public import Logging
 
 public enum EnvVarsError: Error, CustomStringConvertible {
@@ -25,25 +24,6 @@ public enum EnvVarsError: Error, CustomStringConvertible {
 }
 
 extension EnvVars {
-    // Throwing getters for required environment variables
-    public func baseUrl() throws -> URL {
-        guard let urlString = self["BASE_URL"] else {
-            throw EnvVarsError.missingVariable("BASE_URL")
-        }
-        guard let url = URL(string: urlString) else {
-            throw EnvVarsError.invalidFormat(
-                variable: "BASE_URL",
-                expectedType: "URL",
-                value: urlString
-            )
-        }
-        return url
-    }
-
-    public mutating func setBaseUrl(_ url: URL) {
-        self["BASE_URL"] = url.absoluteString
-    }
-
     public func port() throws -> Int {
         guard let portString = self["PORT"] else {
             throw EnvVarsError.missingVariable("PORT")
@@ -64,15 +44,6 @@ extension EnvVars {
 }
 
 extension EnvVars {
-    public var allowedInsecureHosts: [String]? {
-        get {
-            self["ALLOWED_INSECURE_HOSTS"]?.components(separatedBy: ",").map {
-                $0.trimmingCharacters(in: .whitespaces)
-            }
-        }
-        set { self["ALLOWED_INSECURE_HOSTS"] = newValue?.joined(separator: ",") }
-    }
-
     public var canonicalHost: String? {
         get { self["CANONICAL_HOST"] }
         set { self["CANONICAL_HOST"] = newValue }

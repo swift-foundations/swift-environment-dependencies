@@ -2,27 +2,23 @@
 
 ![Development Status](https://img.shields.io/badge/status-active--development-orange.svg)
 
-The legacy `EnvVars` environment surface and its `\.envVars` /
-`\.projectRoot` dependency keys, backed by the institute
-[swift-environment](https://github.com/swift-foundations/swift-environment) reader.
+Foundation-free environment dependency state with an opt-in Foundation integration.
+The package also retains the legacy `Environment Dependencies` product as a temporary,
+deprecated compatibility facade.
 
-> The environment × dependencies integration package: the dictionary-backed
-> `EnvVars` value (formerly `ServerFoundationEnvVars`), its typed getters, and
-> the dependency keys that inject it. Live reads delegate to `Environment`;
-> this surface exists for consumers not yet migrated onto the native
-> `Environment` vocabulary.
+> New consumers must select `Environment Dependencies Core` or
+> `Environment Dependencies Foundation Integration` directly. The legacy product
+> accepts no new consumers and contains no behavior.
 
 ## Overview
 
-`import Environment_Dependencies` provides:
+The package vends three products:
 
-| Surface | Description |
-|---------|-------------|
-| `EnvVars` (alias `EnvironmentVariables`) | Mutable dictionary-backed snapshot of environment variables |
-| Typed getters | `baseUrl()`, `port()`, `logLevel`, `canonicalHost`, … |
-| `EnvVars.live(...)` | Process environment via institute `Environment`, with optional dotenv overlay |
-| `@Dependency(\.envVars)` | The application's environment variables |
-| `@Dependency(\.projectRoot)` | The project-root URL key |
+| Product | Import | Boundary |
+|---------|--------|----------|
+| `Environment Dependencies Core` | `Environment_Dependencies_Core` | `EnvVars`, scalar/dictionary behavior, process-only `live()`, and `\.envVars`; no Foundation API |
+| `Environment Dependencies Foundation Integration` | `Environment_Dependencies_Foundation_Integration` | Core plus URL, file/dotenv overlay, `allowedInsecureHosts`, and `\.projectRoot` |
+| `Environment Dependencies` | `Environment_Dependencies` | Deprecated compatibility facade re-exporting both products; zero behavior |
 
 ## Installation
 
@@ -36,7 +32,10 @@ dependencies: [
 .target(
     name: "YourTarget",
     dependencies: [
-        .product(name: "Environment Dependencies", package: "swift-environment-dependencies")
+        .product(
+            name: "Environment Dependencies Core",
+            package: "swift-environment-dependencies"
+        )
     ]
 )
 ```
@@ -44,29 +43,26 @@ dependencies: [
 ## Quick Start
 
 ```swift
-import Environment_Dependencies
+import Environment_Dependencies_Core
 
 @Dependency(\.envVars) var envVars
-let url = try envVars.baseUrl()
+let port = try envVars.port()
 ```
 
-Override in tests:
+Consumers that need URL or dotenv behavior select the leaf instead:
 
 ```swift
-withDependencies {
-    $0.envVars = try! .live(localEnvFile: fixtureURL)
-} operation: {
-    // envVars resolves to the fixture
-}
+import Environment_Dependencies_Foundation_Integration
+
+let envVars = try EnvVars.live(localEnvFile: fixtureURL)
+let url = try envVars.baseUrl()
 ```
 
 ## Migration Status
 
-This package preserves the legacy ssf environment surface verbatim so
-consumers keep compiling during the decomposition. New code should prefer the
-native [swift-environment](https://github.com/swift-foundations/swift-environment)
-vocabulary (`Environment.Read`, `Environment.Snapshot`, `Environment.Dotenv`);
-this package's own dissolution path is consumers migrating onto it.
+`Environment Dependencies` remains source-compatible for existing imports during this
+release, but it is migration-only. See [MIGRATION.md](MIGRATION.md) for the committed
+consumer census, migration guidance, and exact facade retirement gate.
 
 ## License
 

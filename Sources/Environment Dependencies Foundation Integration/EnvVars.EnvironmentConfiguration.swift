@@ -7,6 +7,7 @@
 //
 
 import Environment
+public import Environment_Dependencies_Core
 public import Foundation
 
 extension EnvVars {
