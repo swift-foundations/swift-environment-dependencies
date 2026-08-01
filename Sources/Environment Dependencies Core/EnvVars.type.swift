@@ -25,13 +25,15 @@ public struct EnvVars: Sendable {
     /// Creates an `EnvVars` from a dictionary, validating that every required key is present.
     ///
     /// - Throws: ``EnvVarsError/missingVariable(_:)`` for the first required key that is absent.
-    public init(dictionary: [String: String], requiredKeys: Set<String>) throws {
+    public init(dictionary: [String: String], requiredKeys: Set<String>) throws(EnvVarsError) {
         for key in requiredKeys where dictionary[key] == nil {
             throw EnvVarsError.missingVariable(key)
         }
         self.storage = dictionary
     }
+}
 
+extension EnvVars {
     /// Reads or writes the value for a given variable name.
     public subscript(_ name: String) -> String? {
         get { storage[name] }

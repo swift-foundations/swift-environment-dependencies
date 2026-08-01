@@ -12,7 +12,7 @@ import Environment
 
 extension EnvVars {
     /// Builds an `EnvVars` from the live process environment.
-    public static func live() throws -> EnvVars {
+    public static func live() throws(EnvVarsError) -> EnvVars {
         try EnvVars(dictionary: Environment.read.all(), requiredKeys: [])
     }
 }
@@ -20,7 +20,11 @@ extension EnvVars {
 extension EnvVars: Dependency.Key {
     /// The live value reads the current process environment via institute `Environment`.
     public static var liveValue: EnvVars {
-        (try? live()) ?? EnvVars()
+        do throws(EnvVarsError) {
+            return try live()
+        } catch {
+            return EnvVars()
+        }
     }
 }
 

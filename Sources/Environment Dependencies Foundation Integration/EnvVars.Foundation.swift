@@ -9,7 +9,7 @@ public import Environment_Dependencies_Core
 public import Foundation
 
 extension EnvVars {
-    public func baseUrl() throws -> Foundation.URL {
+    public func baseUrl() throws(EnvVarsError) -> Foundation.URL {
         guard let urlString = self["BASE_URL"] else {
             throw EnvVarsError.missingVariable("BASE_URL")
         }

@@ -8,10 +8,12 @@
 
 public import Logging
 
-public enum EnvVarsError: Error, CustomStringConvertible {
+public enum EnvVarsError: Swift.Error, CustomStringConvertible {
     case missingVariable(String)
     case invalidFormat(variable: String, expectedType: String, value: String)
+}
 
+extension EnvVarsError {
     public var description: String {
         switch self {
         case .missingVariable(let name):
@@ -24,7 +26,7 @@ public enum EnvVarsError: Error, CustomStringConvertible {
 }
 
 extension EnvVars {
-    public func port() throws -> Int {
+    public func port() throws(EnvVarsError) -> Int {
         guard let portString = self["PORT"] else {
             throw EnvVarsError.missingVariable("PORT")
         }

@@ -37,8 +37,14 @@ extension EnvVars.EnvironmentConfiguration {
                 .map { root.appendingPathComponent($0) }
                 .first { FileManager.default.fileExists(atPath: $0.path) }
         }
+        // swift-linter:disable:next try optional
+        // REASON: Foundation.Data(contentsOf:) is an untyped cross-module throwing API.
         guard let url, let data = try? Data(contentsOf: url) else { return nil }
         let text = Swift.String(decoding: data, as: Swift.UTF8.self)
-        return try? Environment.Dotenv(parsing: text).values
+        do throws(Environment.Dotenv.Error) {
+            return try Environment.Dotenv(parsing: text).values
+        } catch {
+            return nil
+        }
     }
 }
