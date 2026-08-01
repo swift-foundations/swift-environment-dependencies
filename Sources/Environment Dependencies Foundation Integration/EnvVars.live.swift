@@ -16,6 +16,7 @@ extension EnvVars {
         var dictionary = Environment.read.all()
         if let localEnvFile {
             // swift-linter:disable:next try optional
+            // swiftlint:disable:next no_try_optional
             // REASON: Foundation.Data(contentsOf:) is an untyped cross-module throwing API.
             if let data = try? Foundation.Data(contentsOf: localEnvFile) {
                 let text = Swift.String(decoding: data, as: Swift.UTF8.self)

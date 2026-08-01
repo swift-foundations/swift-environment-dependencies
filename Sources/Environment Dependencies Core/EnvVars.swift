@@ -18,6 +18,7 @@ extension EnvVarsError {
         switch self {
         case .missingVariable(let name):
             return "Environment variable '\(name)' is not set"
+
         case .invalidFormat(let variable, let expectedType, let value):
             return
                 "Environment variable '\(variable)' has invalid format. Expected \(expectedType), got: '\(value)'"

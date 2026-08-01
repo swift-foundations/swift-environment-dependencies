@@ -30,6 +30,7 @@ extension EnvVars.EnvironmentConfiguration {
         switch self {
         case .localEnvFile(let file):
             url = file
+
         case .projectRoot(let root, let environment):
             let candidates = environment.map { [".env.\($0)", ".env"] } ?? [".env"]
             url =
@@ -38,6 +39,7 @@ extension EnvVars.EnvironmentConfiguration {
                 .first { FileManager.default.fileExists(atPath: $0.path) }
         }
         // swift-linter:disable:next try optional
+        // swiftlint:disable:next no_try_optional
         // REASON: Foundation.Data(contentsOf:) is an untyped cross-module throwing API.
         guard let url, let data = try? Data(contentsOf: url) else { return nil }
         let text = Swift.String(decoding: data, as: Swift.UTF8.self)
