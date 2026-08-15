@@ -15,10 +15,13 @@ extension EnvVars {
     public static func live(localEnvFile: Foundation.URL?) throws(EnvVarsError) -> EnvVars {
         var dictionary = Environment.read.all()
         if let localEnvFile {
-            // swift-linter:disable:next try optional
-            // swiftlint:disable:next no_try_optional
-            // REASON: Foundation.Data(contentsOf:) is an untyped cross-module throwing API.
-            if let data = try? Foundation.Data(contentsOf: localEnvFile) {
+            let data: Foundation.Data?
+            do {
+                data = try Foundation.Data(contentsOf: localEnvFile)
+            } catch {
+                data = nil
+            }
+            if let data {
                 let text = Swift.String(decoding: data, as: Swift.UTF8.self)
                 let fileValues: [Swift.String: Swift.String]?
                 do throws(Environment.Dotenv.Error) {

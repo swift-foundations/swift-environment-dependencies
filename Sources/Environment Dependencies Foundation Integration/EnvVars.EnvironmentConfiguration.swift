@@ -38,10 +38,13 @@ extension EnvVars.EnvironmentConfiguration {
                 .map { root.appendingPathComponent($0) }
                 .first { FileManager.default.fileExists(atPath: $0.path) }
         }
-        // swift-linter:disable:next try optional
-        // swiftlint:disable:next no_try_optional
-        // REASON: Foundation.Data(contentsOf:) is an untyped cross-module throwing API.
-        guard let url, let data = try? Data(contentsOf: url) else { return nil }
+        guard let url else { return nil }
+        let data: Data
+        do {
+            data = try Data(contentsOf: url)
+        } catch {
+            return nil
+        }
         let text = Swift.String(decoding: data, as: Swift.UTF8.self)
         do throws(Environment.Dotenv.Error) {
             return try Environment.Dotenv(parsing: text).values
