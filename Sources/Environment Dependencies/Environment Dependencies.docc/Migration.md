@@ -1,6 +1,11 @@
-# Environment Dependencies product migration
+# Product migration
 
-## Boundary
+Moving off the deprecated umbrella product onto the focused Core and Foundation
+Integration products.
+
+## Overview
+
+### Boundary
 
 New consumers must depend on and import one of the focused products:
 

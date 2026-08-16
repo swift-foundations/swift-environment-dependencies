@@ -61,7 +61,7 @@ let url = try envVars.baseUrl()
 ## Migration Status
 
 `Environment Dependencies` remains source-compatible for existing imports during this
-release, but it is migration-only. See [MIGRATION.md](MIGRATION.md) for the committed
+release, but it is migration-only. See the `Migration` article in the `Environment Dependencies` documentation catalogue for the committed
 consumer census, migration guidance, and exact facade retirement gate.
 
 ## License
