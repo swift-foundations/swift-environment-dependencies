@@ -1,11 +1,3 @@
-//
-//  EnvVars.swift
-//  swift-environment-dependencies
-//
-//  Typed getters over the EnvVars store, moved from swift-server-foundation
-//  (decomposition W3, concern C8).
-//
-
 public import Logging
 
 public enum EnvVarsError: Swift.Error, CustomStringConvertible {

@@ -1,8 +1,3 @@
-//
-//  EnvVars Foundation Tests.swift
-//  swift-environment-dependencies
-//
-
 import Dependencies_Test_Support
 import Foundation
 import Testing

@@ -1,17 +1,5 @@
 // swift-tools-version: 6.4
 
-// ===----------------------------------------------------------------------===//
-//
-// This source file is part of the swift-environment-dependencies open source project
-//
-// Copyright (c) 2026 Coen ten Thije Boonkkamp and the swift-environment-dependencies
-// project authors
-// Licensed under Apache License v2.0
-//
-// See LICENSE for license information
-//
-// ===----------------------------------------------------------------------===//
-
 import PackageDescription
 
 let package = Package(
@@ -32,8 +20,7 @@ let package = Package(
             name: "Environment Dependencies Foundation Integration",
             targets: ["Environment Dependencies Foundation Integration"]
         ),
-        // Compatibility-only migration facade. New consumers must select Core or
-        // Foundation Integration directly; this target accepts no new behavior.
+
         .library(
             name: "Environment Dependencies",
             targets: ["Environment Dependencies"]

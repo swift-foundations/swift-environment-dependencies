@@ -1,11 +1,3 @@
-//
-//  EnvVars.TestSupport.swift
-//  swift-environment-dependencies
-//
-//  Development/test fixtures, moved from swift-server-foundation
-//  (decomposition W3, concern C8).
-//
-
 extension EnvVars {
     package static var localWebDevelopment: EnvVars {
         EnvVars([

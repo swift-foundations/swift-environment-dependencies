@@ -1,10 +1,3 @@
-//
-//  EnvVars.Foundation.swift
-//  swift-environment-dependencies
-//
-//  Foundation-defined URL and CharacterSet behavior for EnvVars.
-//
-
 public import Environment_Dependencies_Core
 public import Foundation
 
@@ -27,8 +20,6 @@ extension EnvVars {
         self["BASE_URL"] = url.absoluteString
     }
 
-    /// This accessor remains in the Foundation integration because its historical
-    /// contract trims `CharacterSet.whitespaces`, not only ASCII whitespace.
     public var allowedInsecureHosts: [Swift.String]? {
         get {
             self["ALLOWED_INSECURE_HOSTS"]?.components(separatedBy: ",").map {

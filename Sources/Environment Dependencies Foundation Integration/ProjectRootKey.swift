@@ -1,11 +1,3 @@
-//
-//  ProjectRootKey.swift
-//  swift-environment-dependencies
-//
-//  The \.projectRoot dependency key, moved from swift-server-foundation
-//  (decomposition W3, concern C8).
-//
-
 public import Dependencies
 public import Foundation
 
